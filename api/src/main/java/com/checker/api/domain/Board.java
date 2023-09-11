@@ -2,7 +2,7 @@ package com.checker.api.domain;
 
 public class Board {
 
-    private static final int SIZE_BOARD = 8;
+    public static final int SIZE_BOARD = 8;
 
     private Square[][] square;
 
@@ -11,6 +11,11 @@ public class Board {
     }
 
     public void setupBoard() {
+    }
+
+    public boolean isOnInsideBoard(PositionSquare square) {
+        return square.getX() < Board.SIZE_BOARD
+                && square.getY() < Board.SIZE_BOARD;
     }
 
     public boolean isValidMove(Move move) {
