@@ -3,6 +3,8 @@ package com.checker.api.domain;
 public class Board {
 
     public static final int SIZE_BOARD = 8;
+    public static final int START_POSITION_BOARD = 0;
+    public static final int END_POSITION_BOARD = 7;
 
     private Square[][] square;
 
@@ -14,8 +16,10 @@ public class Board {
     }
 
     public boolean isOnInsideBoard(PositionSquare square) {
-        return square.getX() < Board.SIZE_BOARD
-                && square.getY() < Board.SIZE_BOARD;
+        return  square.getX() >= Board.START_POSITION_BOARD
+                && square.getY() >= Board.START_POSITION_BOARD
+                    && square.getX() <= Board.END_POSITION_BOARD
+                    && square.getY() <= Board.END_POSITION_BOARD;
     }
 
     public boolean isValidMove(Move move) {
