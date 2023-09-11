@@ -1,6 +1,7 @@
 package com.checker.api.domain;
 
 import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
+import com.checker.api.domain.exceptions.SquareAlreadyHasCheckerException;
 
 public class Move {
     private final PositionSquare positionSquareOrigin;
@@ -14,7 +15,8 @@ public class Move {
     }
 
     public boolean isValid() {
-        if(!positionsIsOnInsideBoard()) {
+        boolean positionsIsNotOnInsideBoard = !positionsIsOnInsideBoard();
+        if(positionsIsNotOnInsideBoard) {
             throw new PositionSquareIsNotInsideBoardException();
         }
         return true;
@@ -27,6 +29,6 @@ public class Move {
     private boolean positionsIsOnInsideBoard() {
         boolean originInsideBoard = board.isOnInsideBoard(positionSquareOrigin);
         boolean destinyInsideBoard = board.isOnInsideBoard(positionSquareDestiny);
-        return originInsideBoard || destinyInsideBoard;
+        return originInsideBoard && destinyInsideBoard;
     }
 }
