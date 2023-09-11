@@ -14,7 +14,7 @@ public class Move {
     }
 
     public boolean isValid() {
-        if(positionsIsOnInsideBoard()) {
+        if(!positionsIsOnInsideBoard()) {
             throw new PositionSquareIsNotInsideBoardException();
         }
         return true;
