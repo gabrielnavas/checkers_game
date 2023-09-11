@@ -5,8 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BoardTest {
@@ -20,20 +21,28 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldReturnTrueIfPositinOnTheBoard() {
-        int onBoardPositionX = 0;
-        int onBoardPositionY = 0;
-        PositionSquare positionSquare = new PositionSquare(onBoardPositionX, onBoardPositionY);
-        boolean offTheBoard =  board.isOnInsideBoard(positionSquare);
-        assertTrue(offTheBoard);
-    }
+    public void shouldReturnTrueOfFalseAtPosition() {
+        Map<List<Integer>, Boolean> testsCases = new HashMap<>() {{
+            put(Arrays.asList(-1, -1), false);
+            put(Arrays.asList(Board.START_POSITION_BOARD-1, Board.START_POSITION_BOARD-1), false);
+            put(Arrays.asList(8, 8), false);
+            put(Arrays.asList(Board.END_POSITION_BOARD+1, Board.END_POSITION_BOARD-1), false);
+            put(Arrays.asList(0, 0), true);
+            put(Arrays.asList(7, 7), true);
+            put(Arrays.asList(-1, 0), false);
+            put(Arrays.asList(7, 8), false);
+        }};
 
-    @Test
-    public void shouldReturnFalseIfPositinOffTheBoard() {
-        int offBoardPositionX = Board.SIZE_BOARD;
-        int offBoardPositionY = Board.SIZE_BOARD;
-        PositionSquare positionSquare = new PositionSquare(offBoardPositionX, offBoardPositionY);
-        boolean offTheBoard =  board.isOnInsideBoard(positionSquare);
-        assertFalse(offTheBoard);
+        for (Map.Entry<List<Integer>, Boolean> a : testsCases.entrySet()) {
+            int positionX = a.getKey().get(0);
+            int positionY = a.getKey().get(1);
+
+            PositionSquare positionSquare = new PositionSquare(positionX, positionY);
+
+            boolean expected = a.getValue();
+            boolean received =  board.isOnInsideBoard(positionSquare);
+
+            assertEquals(received, expected);
+        }
     }
 }
