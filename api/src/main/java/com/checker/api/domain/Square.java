@@ -12,19 +12,8 @@ public class Square {
         this.board = board;
     }
 
-    public void setChecker(Checker checker) {
-        this.checker = checker;
-    }
 
-    public PositionSquare getPosition() {
-        return position;
-    }
-
-    public Checker getChecker() {
-        return checker;
-    }
-
-    public Board getBoard() {
-        return board;
+    public boolean hasChecker() {
+        return checker != null;
     }
 }
