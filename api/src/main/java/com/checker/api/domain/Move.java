@@ -15,24 +15,18 @@ public class Move {
     }
 
     public boolean isValid() {
-        boolean positionsIsNotOnInsideBoard = !positionsIsOnInsideBoard();
-        if(positionsIsNotOnInsideBoard) {
-            throw new PositionSquareIsNotInsideBoardException();
-        }
-        boolean alreadyHasCheckerOnDestiny = board.squarePositionHasChecker(positionSquareDestiny);
-        if(alreadyHasCheckerOnDestiny) {
-            throw new SquareAlreadyHasCheckerException();
-        }
-        return true;
+        return board.isValidMove(this);
     }
 
     public void execute() {
 
     }
 
-    private boolean positionsIsOnInsideBoard() {
-        boolean originInsideBoard = board.isOnInsideBoard(positionSquareOrigin);
-        boolean destinyInsideBoard = board.isOnInsideBoard(positionSquareDestiny);
-        return originInsideBoard && destinyInsideBoard;
+    public PositionSquare getPositionSquareDestiny() {
+        return positionSquareDestiny;
+    }
+
+    public PositionSquare getPositionSquareOrigin() {
+        return positionSquareOrigin;
     }
 }

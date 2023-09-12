@@ -1,7 +1,5 @@
 package com.checker.api.domain;
 
-import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
-import com.checker.api.domain.exceptions.SquareAlreadyHasCheckerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,58 +29,21 @@ public class MoveTest {
     @BeforeEach
     void setup() {
         move = new Move(board, positionSquareOrigin, positionSquareDestiny);
-
-        when(board.isOnInsideBoard(positionSquareOrigin)).thenReturn(true);
-        when(board.isOnInsideBoard(positionSquareDestiny)).thenReturn(true);
+        when(board.isValidMove(move)).thenReturn(true);
     }
 
 
     @Test
-    public void shouldCallIsOnInsideBoardWithCorrectSquareOriginAndSquareDestiny() {
+    public void shouldCallOnceIsValid() {
         move.isValid();
-        verify(board, times(1)).isOnInsideBoard(positionSquareOrigin);
-        verify(board, times(1)).isOnInsideBoard(positionSquareDestiny);
-    }
-
-    @Test
-    public void shouldThrowExceptionsIfIsOnInsideBoarWithOriginReturnsFalse() {
-        when(board.isOnInsideBoard(positionSquareOrigin)).thenReturn(false);
-
-        final PositionSquareIsNotInsideBoardException ex;
-        ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
-            move.isValid();
-        });
-
-        assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
-    }
-
-    @Test
-    public void shouldThrowExceptionsIfIsOnInsideBoarWithDestinyReturnsFalse() {
-        when(board.isOnInsideBoard(positionSquareDestiny)).thenReturn(false);
-
-        final PositionSquareIsNotInsideBoardException ex;
-        ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
-            move.isValid();
-        });
-
-        assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
-    }
-
-    @Test
-    public void shouldCallSquarePositionHasCheckerWithCorrectSquareDestiny() {
-        move.isValid();
+        verify(board, times(1)).isValidMove(move);
     }
 
 
     @Test
-    public void shouldThrowExceptionsIfSquarePositionHasCheckerReturnsTrue() {
-        when(board.squarePositionHasChecker(positionSquareDestiny)).thenReturn(true);
-
-        final SquareAlreadyHasCheckerException ex;
-        ex = assertThrows(SquareAlreadyHasCheckerException.class, () -> {
-            move.isValid();
-        });
-
-        assertEquals(ex.getMessage(), SquareAlreadyHasCheckerException.DEFAULT_MESSAGE);
+    public void shouldIsValidReturnsFalseIfIsValidIsFalse() {
+        when(board.isValidMove(move)).thenReturn(false);
+        boolean received = move.isValid();
+        assertFalse(received);
     }
 }
