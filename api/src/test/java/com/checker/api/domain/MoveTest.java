@@ -1,6 +1,7 @@
 package com.checker.api.domain;
 
 import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
+import com.checker.api.domain.exceptions.SquareAlreadyHasCheckerException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,5 +66,23 @@ public class MoveTest {
         });
 
         assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
+    }
+
+    @Test
+    public void shouldCallSquarePositionHasCheckerWithCorrectSquareDestiny() {
+        move.isValid();
+    }
+
+
+    @Test
+    public void shouldThrowExceptionsIfSquarePositionHasCheckerReturnsTrue() {
+        when(board.squarePositionHasChecker(positionSquareDestiny)).thenReturn(true);
+
+        final SquareAlreadyHasCheckerException ex;
+        ex = assertThrows(SquareAlreadyHasCheckerException.class, () -> {
+            move.isValid();
+        });
+
+        assertEquals(ex.getMessage(), SquareAlreadyHasCheckerException.DEFAULT_MESSAGE);
     }
 }

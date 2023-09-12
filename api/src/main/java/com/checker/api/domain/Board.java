@@ -26,7 +26,7 @@ public class Board {
         return false;
     }
 
-    public Square getSquarePosition(PositionSquare position) {
-        return null;
+    public boolean squarePositionHasChecker(PositionSquare position) {
+        return false;
     }
 }

@@ -19,6 +19,10 @@ public class Move {
         if(positionsIsNotOnInsideBoard) {
             throw new PositionSquareIsNotInsideBoardException();
         }
+        boolean alreadyHasCheckerOnDestiny = board.squarePositionHasChecker(positionSquareDestiny);
+        if(alreadyHasCheckerOnDestiny) {
+            throw new SquareAlreadyHasCheckerException();
+        }
         return true;
     }
 
