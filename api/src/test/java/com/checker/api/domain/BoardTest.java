@@ -1,5 +1,6 @@
 package com.checker.api.domain;
 
+import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,37 +13,185 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class BoardTest {
 
-    Board board;
+    Move move;
+
+    Board boardSut;
+
+
+    Map<List<Integer>, Boolean> successfulCases;
+
+    Map<List<Integer>, Boolean> failedCases;
 
 
     @BeforeEach
     void setup() {
-        board = new Board();
-    }
+        boardSut = new Board();
 
-    @Test
-    public void shouldReturnTrueOfFalseAtPosition() {
-        Map<List<Integer>, Boolean> testsCases = new HashMap<>() {{
+        successfulCases = new HashMap<>() {{
+            put(Arrays.asList(0, 0), true);
+            put(Arrays.asList(7, 7), true);
+        }};
+
+
+        failedCases = new HashMap<>() {{
             put(Arrays.asList(-1, -1), false);
             put(Arrays.asList(Board.START_POSITION_BOARD-1, Board.START_POSITION_BOARD-1), false);
             put(Arrays.asList(8, 8), false);
             put(Arrays.asList(Board.END_POSITION_BOARD+1, Board.END_POSITION_BOARD-1), false);
-            put(Arrays.asList(0, 0), true);
-            put(Arrays.asList(7, 7), true);
             put(Arrays.asList(-1, 0), false);
             put(Arrays.asList(7, 8), false);
         }};
+    }
 
-        for (Map.Entry<List<Integer>, Boolean> a : testsCases.entrySet()) {
-            int positionX = a.getKey().get(0);
-            int positionY = a.getKey().get(1);
+    @Test
+    public void shouldReturnsSuccessFromIsValidMoveWithSuccessCrossSuccess() {
 
-            PositionSquare positionSquare = new PositionSquare(positionX, positionY);
+        // loop for origin case
+        for (Map.Entry<List<Integer>, Boolean> originCase  : successfulCases.entrySet()) {
+            // create the PositionSquare origin
+            int originPositionX = originCase.getKey().get(0);
+            int originPositionY = originCase.getKey().get(1);
+            boolean expectedOriginPosition = originCase.getValue();
+            PositionSquare positionSquareOrigin = new PositionSquare(originPositionX, originPositionY);
 
-            boolean expected = a.getValue();
-            boolean received =  board.isOnInsideBoard(positionSquare);
+            // loop for destiny case
+            for (Map.Entry<List<Integer>, Boolean> destinyCase  : successfulCases.entrySet()) {
+                // create the Position origin
+                int originDestinyX = destinyCase.getKey().get(0);
+                int originDestinyY = destinyCase.getKey().get(1);
+                boolean expectedDestinyPosition = destinyCase.getValue();
+                PositionSquare positionSquareDestiny = new PositionSquare(originDestinyX, originDestinyY);
 
-            assertEquals(received, expected);
+                // create the move
+                move = new Move(boardSut, positionSquareOrigin, positionSquareDestiny);
+
+                // expected boolean from origin and destiny position
+                boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
+
+                // call the correct method of sut
+                boolean isMoveReceived = boardSut.isValidMove(move);
+
+                assertEquals(isMoveReceived, isMoveExpected);
+            }
+        }
+    }
+
+    @Test
+    public void shouldReturnsFailedFromIsValidMoveWithFailedCrossFailed() {
+
+        // loop for origin case
+        for (Map.Entry<List<Integer>, Boolean> originCase  : failedCases.entrySet()) {
+            // create the PositionSquare origin
+            int originPositionX = originCase.getKey().get(0);
+            int originPositionY = originCase.getKey().get(1);
+            boolean expectedOriginPosition = originCase.getValue();
+            PositionSquare positionSquareOrigin = new PositionSquare(originPositionX, originPositionY);
+
+            // loop for destiny case
+            for (Map.Entry<List<Integer>, Boolean> destinyCase  : failedCases.entrySet()) {
+                // create the Position origin
+                int originDestinyX = destinyCase.getKey().get(0);
+                int originDestinyY = destinyCase.getKey().get(1);
+                boolean expectedDestinyPosition = destinyCase.getValue();
+                PositionSquare positionSquareDestiny = new PositionSquare(originDestinyX, originDestinyY);
+
+                // create the move
+                Move move = new Move(boardSut, positionSquareOrigin, positionSquareDestiny);
+
+                // expected boolean from origin and destiny position
+                boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
+
+                PositionSquareIsNotInsideBoardException ex;
+                ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
+                    // call the correct method of sut
+                    boolean isMoveReceived = boardSut.isValidMove(move);
+
+                    assertEquals(isMoveReceived, isMoveExpected);
+                });
+
+                assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
+            }
+        }
+    }
+
+    @Test
+    public void shouldReturnsFailedFromIsValidMoveWithSuccessCrossFailed() {
+
+        // loop for origin case
+        for (Map.Entry<List<Integer>, Boolean> originCase  : successfulCases.entrySet()) {
+            // create the PositionSquare origin
+            int originPositionX = originCase.getKey().get(0);
+            int originPositionY = originCase.getKey().get(1);
+            boolean expectedOriginPosition = originCase.getValue();
+            PositionSquare positionSquareOrigin = new PositionSquare(originPositionX, originPositionY);
+
+            // loop for destiny case
+            for (Map.Entry<List<Integer>, Boolean> destinyCase  : failedCases.entrySet()) {
+                // create the Position origin
+                int originDestinyX = destinyCase.getKey().get(0);
+                int originDestinyY = destinyCase.getKey().get(1);
+                boolean expectedDestinyPosition = destinyCase.getValue();
+                PositionSquare positionSquareDestiny = new PositionSquare(originDestinyX, originDestinyY);
+
+                // create the move
+                Move move = new Move(boardSut, positionSquareOrigin, positionSquareDestiny);
+
+                // expected boolean from origin and destiny position
+                boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
+
+                PositionSquareIsNotInsideBoardException ex;
+                ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
+                    // call the correct method of sut
+                    boolean isMoveReceived = boardSut.isValidMove(move);
+
+                    assertEquals(isMoveReceived, isMoveExpected);
+                });
+
+                assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
+            }
+        }
+    }
+
+
+    @Test
+    public void shouldReturnsFailedFromIsValidMoveWithFailedCrossSuccess() {
+
+        // loop for origin case
+        for (Map.Entry<List<Integer>, Boolean> originCase  : failedCases.entrySet()) {
+            // create the PositionSquare origin
+            int originPositionX = originCase.getKey().get(0);
+            int originPositionY = originCase.getKey().get(1);
+            boolean expectedOriginPosition = originCase.getValue();
+            PositionSquare positionSquareOrigin = new PositionSquare(originPositionX, originPositionY);
+
+            // loop for destiny case
+            for (Map.Entry<List<Integer>, Boolean> destinyCase  : successfulCases.entrySet()) {
+                // create the Position origin
+                int originDestinyX = destinyCase.getKey().get(0);
+                int originDestinyY = destinyCase.getKey().get(1);
+                boolean expectedDestinyPosition = destinyCase.getValue();
+                PositionSquare positionSquareDestiny = new PositionSquare(originDestinyX, originDestinyY);
+
+                // create the move
+                Move move = new Move(boardSut, positionSquareOrigin, positionSquareDestiny);
+
+                // expected boolean from origin and destiny position
+                boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
+
+                PositionSquareIsNotInsideBoardException ex;
+                ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
+                    // call the correct method of sut
+                    boolean isMoveReceived = boardSut.isValidMove(move);
+
+                    assertEquals(isMoveReceived, isMoveExpected);
+                });
+
+                assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
+            }
         }
     }
 }
+
+
+
+

@@ -1,5 +1,7 @@
 package com.checker.api.domain;
 
+import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
+
 public class Board {
 
     public static final int SIZE_BOARD = 8;
@@ -15,18 +17,24 @@ public class Board {
     public void setupBoard() {
     }
 
-    public boolean isOnInsideBoard(PositionSquare square) {
+    public boolean isValidMove(Move move) {
+        boolean positionsIsNotOnInsideBoard = !checkMove(move);
+        if(positionsIsNotOnInsideBoard) {
+            throw new PositionSquareIsNotInsideBoardException();
+        }
+        return true;
+    }
+
+    private boolean positionIsOnInsideBoard(PositionSquare square) {
         return  square.getX() >= Board.START_POSITION_BOARD
                 && square.getY() >= Board.START_POSITION_BOARD
                     && square.getX() <= Board.END_POSITION_BOARD
                     && square.getY() <= Board.END_POSITION_BOARD;
     }
 
-    public boolean isValidMove(Move move) {
-        return false;
-    }
-
-    public boolean squarePositionHasChecker(PositionSquare position) {
-        return false;
+    private boolean checkMove(Move move) {
+        boolean originInsideBoard = positionIsOnInsideBoard(move.getPositionSquareOrigin());
+        boolean destinyInsideBoard = positionIsOnInsideBoard(move.getPositionSquareDestiny());
+        return originInsideBoard && destinyInsideBoard;
     }
 }
