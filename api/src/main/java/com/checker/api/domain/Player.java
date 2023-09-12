@@ -1,5 +1,7 @@
 package com.checker.api.domain;
 
+import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
+
 public abstract class Player {
 
     private final String username;
@@ -15,7 +17,7 @@ public abstract class Player {
     public void makeMove(Move move) throws Exception {
         boolean alreadyMove = move.isValid();
         if(!alreadyMove) {
-            throw new Exception("can not do this move");
+            throw new PositionSquareIsNotInsideBoardException();
         }
         move.execute();
     }

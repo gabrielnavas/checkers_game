@@ -29,20 +29,20 @@ public class MoveTest {
     @BeforeEach
     void setup() {
         move = new Move(board, positionSquareOrigin, positionSquareDestiny);
-        when(board.isValidMove(move)).thenReturn(true);
+        when(board.isMoveOnInsideBoard(move)).thenReturn(true);
     }
 
 
     @Test
     public void shouldCallOnceIsValid() {
         move.isValid();
-        verify(board, times(1)).isValidMove(move);
+        verify(board, times(1)).isMoveOnInsideBoard(move);
     }
 
 
     @Test
     public void shouldIsValidReturnsFalseIfIsValidIsFalse() {
-        when(board.isValidMove(move)).thenReturn(false);
+        when(board.isMoveOnInsideBoard(move)).thenReturn(false);
         boolean received = move.isValid();
         assertFalse(received);
     }

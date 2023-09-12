@@ -17,12 +17,10 @@ public class Board {
     public void setupBoard() {
     }
 
-    public boolean isValidMove(Move move) {
-        boolean positionsIsNotOnInsideBoard = !checkMove(move);
-        if(positionsIsNotOnInsideBoard) {
-            throw new PositionSquareIsNotInsideBoardException();
-        }
-        return true;
+    public boolean isMoveOnInsideBoard(Move move) {
+        boolean originInsideBoard = positionIsOnInsideBoard(move.getPositionSquareOrigin());
+        boolean destinyInsideBoard = positionIsOnInsideBoard(move.getPositionSquareDestiny());
+        return originInsideBoard && destinyInsideBoard;
     }
 
     private boolean positionIsOnInsideBoard(PositionSquare square) {
@@ -30,11 +28,5 @@ public class Board {
                 && square.getY() >= Board.START_POSITION_BOARD
                     && square.getX() <= Board.END_POSITION_BOARD
                     && square.getY() <= Board.END_POSITION_BOARD;
-    }
-
-    private boolean checkMove(Move move) {
-        boolean originInsideBoard = positionIsOnInsideBoard(move.getPositionSquareOrigin());
-        boolean destinyInsideBoard = positionIsOnInsideBoard(move.getPositionSquareDestiny());
-        return originInsideBoard && destinyInsideBoard;
     }
 }

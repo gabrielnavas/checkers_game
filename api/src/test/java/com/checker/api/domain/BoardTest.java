@@ -1,6 +1,5 @@
 package com.checker.api.domain;
 
-import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +43,7 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldReturnsSuccessFromIsValidMoveWithSuccessCrossSuccess() {
+    public void shouldReturnsTrueWithSuccessCrossSuccess() {
 
         // loop for origin case
         for (Map.Entry<List<Integer>, Boolean> originCase  : successfulCases.entrySet()) {
@@ -69,7 +68,7 @@ public class BoardTest {
                 boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
 
                 // call the correct method of sut
-                boolean isMoveReceived = boardSut.isValidMove(move);
+                boolean isMoveReceived = boardSut.isMoveOnInsideBoard(move);
 
                 assertEquals(isMoveReceived, isMoveExpected);
             }
@@ -77,7 +76,7 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldReturnsFailedFromIsValidMoveWithFailedCrossFailed() {
+    public void shouldReturnsFalseWithFailedCrossFailed() {
 
         // loop for origin case
         for (Map.Entry<List<Integer>, Boolean> originCase  : failedCases.entrySet()) {
@@ -101,21 +100,16 @@ public class BoardTest {
                 // expected boolean from origin and destiny position
                 boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
 
-                PositionSquareIsNotInsideBoardException ex;
-                ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
-                    // call the correct method of sut
-                    boolean isMoveReceived = boardSut.isValidMove(move);
+                // call the correct method of sut
+                boolean isMoveReceived = boardSut.isMoveOnInsideBoard(move);
 
-                    assertEquals(isMoveReceived, isMoveExpected);
-                });
-
-                assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
+                assertEquals(isMoveReceived, isMoveExpected);
             }
         }
     }
 
     @Test
-    public void shouldReturnsFailedFromIsValidMoveWithSuccessCrossFailed() {
+    public void shouldReturnsFalseWithSuccessCrossFailed() {
 
         // loop for origin case
         for (Map.Entry<List<Integer>, Boolean> originCase  : successfulCases.entrySet()) {
@@ -139,22 +133,17 @@ public class BoardTest {
                 // expected boolean from origin and destiny position
                 boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
 
-                PositionSquareIsNotInsideBoardException ex;
-                ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
-                    // call the correct method of sut
-                    boolean isMoveReceived = boardSut.isValidMove(move);
+                // call the correct method of sut
+                boolean isMoveReceived = boardSut.isMoveOnInsideBoard(move);
 
-                    assertEquals(isMoveReceived, isMoveExpected);
-                });
-
-                assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
+                assertEquals(isMoveReceived, isMoveExpected);
             }
         }
     }
 
 
     @Test
-    public void shouldReturnsFailedFromIsValidMoveWithFailedCrossSuccess() {
+    public void shouldReturnsFalseWithFailedCrossSuccess() {
 
         // loop for origin case
         for (Map.Entry<List<Integer>, Boolean> originCase  : failedCases.entrySet()) {
@@ -178,15 +167,10 @@ public class BoardTest {
                 // expected boolean from origin and destiny position
                 boolean isMoveExpected = expectedOriginPosition & expectedDestinyPosition;
 
-                PositionSquareIsNotInsideBoardException ex;
-                ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
-                    // call the correct method of sut
-                    boolean isMoveReceived = boardSut.isValidMove(move);
+                // call the correct method of sut
+                boolean isMoveReceived = boardSut.isMoveOnInsideBoard(move);
 
-                    assertEquals(isMoveReceived, isMoveExpected);
-                });
-
-                assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
+                assertEquals(isMoveReceived, isMoveExpected);
             }
         }
     }

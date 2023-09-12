@@ -1,5 +1,6 @@
 package com.checker.api.domain;
 
+import com.checker.api.domain.exceptions.PositionSquareIsNotInsideBoardException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,8 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerTest {
@@ -31,21 +31,17 @@ public class PlayerTest {
     public void throwExceptionIfIsValidReturnFalse() {
         when(move.isValid()).thenReturn(false);
 
-        final Exception ex = assertThrows(Exception.class, () -> {
+        final PositionSquareIsNotInsideBoardException ex = assertThrows(PositionSquareIsNotInsideBoardException.class, () -> {
             player.makeMove(move);
             verify(move).isValid();
         });
 
-        assertEquals(ex.getMessage(), "can not do this move");
+        assertEquals(ex.getMessage(), PositionSquareIsNotInsideBoardException.DEFAULT_MESSAGE);
     }
 
     @Test
-    public void verifyCallExecuteMoveIfIsValidReturnTrue() {
+    public void verifyCallExecuteMoveIfIsValidReturnTrue() throws Exception {
         when(move.isValid()).thenReturn(true);
-
-        assertThrows(Exception.class, () -> {
-            player.makeMove(move);
-            verify(move).execute();
-        });
+        player.makeMove(move);
     }
 }
