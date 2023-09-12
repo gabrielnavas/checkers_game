@@ -3,12 +3,11 @@ package com.checker.api.domain;
 public class Checker {
 
     private final KindChecker kind;
-    private final Square square;
     private  final Player owner;
 
-    public Checker(KindChecker kind, Square square, Player owner) {
+
+    public Checker(KindChecker kind, Player owner) {
         this.kind = kind;
-        this.square = square;
         this.owner = owner;
     }
 
@@ -26,10 +25,6 @@ public class Checker {
 
     public KindChecker getKind() {
         return kind;
-    }
-
-    public Square getSquare() {
-        return square;
     }
 
     public Player getOwner() {

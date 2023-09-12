@@ -3,6 +3,7 @@ package com.checker.api.domain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
@@ -12,10 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class BoardTest {
 
+    @InjectMocks
+    PlayerRed playerRed;
+
+    @InjectMocks
+    PlayerWhite playerWhite;
+
     Move move;
 
     Board boardSut;
-
 
     Map<List<Integer>, Boolean> successfulCases;
 
@@ -31,15 +37,115 @@ public class BoardTest {
             put(Arrays.asList(7, 7), true);
         }};
 
-
         failedCases = new HashMap<>() {{
             put(Arrays.asList(-1, -1), false);
             put(Arrays.asList(Board.START_POSITION_BOARD-1, Board.START_POSITION_BOARD-1), false);
             put(Arrays.asList(8, 8), false);
-            put(Arrays.asList(Board.END_POSITION_BOARD+1, Board.END_POSITION_BOARD-1), false);
+            put(Arrays.asList(Board.END_ROW_POSITION_BOARD+1, Board.END_ROW_POSITION_BOARD-1), false);
             put(Arrays.asList(-1, 0), false);
             put(Arrays.asList(7, 8), false);
         }};
+    }
+
+    @Test
+    public void shouldCallSetupBoardWithPlayersNoThrowExceptions() {
+        assertDoesNotThrow(() -> {
+            boardSut.setupBoard(playerRed, playerWhite);
+            Square[][] squares = boardSut.getSquares();
+
+            for (int j = 1; j < Board.SIZE_BOARD; j += 2) {
+                assertTrue(squares[0][j].hasChecker());
+            }
+            for (int j = 0; j < Board.SIZE_BOARD; j += 2) {
+                assertTrue(squares[1][j].hasChecker());
+            }
+            for (int j = 1; j < Board.SIZE_BOARD; j += 2) {
+                assertTrue(squares[2][j].hasChecker());
+            }
+
+            for (int j = 0; j < Board.SIZE_BOARD; j++) {
+                assertFalse(squares[3][j].hasChecker());
+            }
+            for (int j = 0; j < Board.SIZE_BOARD; j++) {
+                assertFalse(squares[4][j].hasChecker());
+            }
+
+
+            for (int j = 1; j < Board.SIZE_BOARD; j += 2) {
+                assertTrue(squares[0][j].hasChecker());
+            }
+            for (int j = 0; j < Board.SIZE_BOARD; j += 2) {
+                assertTrue(squares[1][j].hasChecker());
+            }
+            for (int j = 1; j < Board.SIZE_BOARD; j += 2) {
+                assertTrue(squares[2][j].hasChecker());
+            }
+        });
+    }
+
+    @Test
+    public void shouldCallSetupBoardVerifyRedCheckers() {
+        assertDoesNotThrow(() -> {
+            boardSut.setupBoard(playerRed, playerWhite);
+            Square[][] squares = boardSut.getSquares();
+
+            Square square = null;
+
+            for (int j = 1; j < Board.SIZE_BOARD; j += 2) {
+                square = squares[0][j];
+                assertTrue(square.hasChecker());
+            }
+            for (int j = 0; j < Board.SIZE_BOARD; j += 2) {
+                square = squares[1][j];
+                assertTrue(square.hasChecker());
+            }
+            for (int j = 1; j < Board.SIZE_BOARD; j += 2) {
+                square = squares[2][j];
+                assertTrue(square.hasChecker());
+            }
+        });
+    }
+
+    @Test
+    public void shouldCallSetupBoardVerifyTheBetWeen() {
+        assertDoesNotThrow(() -> {
+            boardSut.setupBoard(playerRed, playerWhite);
+            Square[][] squares = boardSut.getSquares();
+
+            Square square = null;
+
+            for (int j = 0; j < Board.SIZE_BOARD; j ++) {
+                square = squares[3][j];
+                assertFalse(square.hasChecker());
+            }
+            for (int j = 0; j < Board.SIZE_BOARD; j ++) {
+                square = squares[4][j];
+                assertFalse(square.hasChecker());
+            }
+        });
+    }
+
+    @Test
+    public void shouldCallSetupBoardVerifyWhiteCheckers() {
+        assertDoesNotThrow(() -> {
+            boardSut.setupBoard(playerRed, playerWhite);
+            Square[][] squares = boardSut.getSquares();
+
+            Square square = null;
+
+            for (int j = 0; j < Board.SIZE_BOARD; j += 2) {
+                square = squares[5][j];
+                assertTrue(square.hasChecker());
+            }
+            for (int j = 1; j < Board.SIZE_BOARD; j += 2) {
+                square = squares[6][j];
+                assertTrue(square.hasChecker());
+            }
+            for (int j = 0; j < Board.SIZE_BOARD; j += 2) {
+                square = squares[7][j];
+                assertTrue(square.hasChecker());
+            }
+        });
     }
 
     @Test
