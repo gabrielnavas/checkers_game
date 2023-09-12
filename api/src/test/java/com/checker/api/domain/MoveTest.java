@@ -32,18 +32,41 @@ public class MoveTest {
         when(board.isMoveOnInsideBoard(move)).thenReturn(true);
     }
 
-
     @Test
-    public void shouldCallOnceIsValid() {
+    public void shouldCallIsMoveOnInsideBoardOnce() {
         move.isValid();
         verify(board, times(1)).isMoveOnInsideBoard(move);
     }
 
+    @Test
+    public void shouldCallSquarePositionHasCheckerOnce() {
+        move.isValid();
+        verify(board, times(1)).squarePositionHasChecker(positionSquareDestiny);
+    }
 
     @Test
-    public void shouldIsValidReturnsFalseIfIsValidIsFalse() {
+    public void shouldIsMoveOnInsideBoardReturnsFalse() {
         when(board.isMoveOnInsideBoard(move)).thenReturn(false);
-        boolean received = move.isValid();
-        assertFalse(received);
+        boolean isMoveReceived = move.isValid();
+        assertFalse(isMoveReceived);
+    }
+
+    @Test
+    public void shouldIsMoveOnInsideBoardReturnsTrue() {
+        boolean isMoveReceived = move.isValid();
+        assertTrue(isMoveReceived);
+    }
+
+    @Test
+    public void shouldSquarePositionHasCheckerReturnsFalse() {
+        when(board.squarePositionHasChecker(positionSquareDestiny)).thenReturn(true);
+        boolean isMoveReceived = move.isValid();
+        assertFalse(isMoveReceived);
+    }
+
+    @Test
+    public void shouldSquarePositionHasCheckerReturnsTrue() {
+        boolean isMoveReceived = move.isValid();
+        assertTrue(isMoveReceived);
     }
 }

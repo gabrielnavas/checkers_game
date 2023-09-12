@@ -29,4 +29,8 @@ public class Board {
                     && square.getX() <= Board.END_POSITION_BOARD
                     && square.getY() <= Board.END_POSITION_BOARD;
     }
+
+    public boolean squarePositionHasChecker(PositionSquare position) {
+        return false;
+    }
 }

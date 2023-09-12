@@ -12,7 +12,13 @@ public class Move {
     }
 
     public boolean isValid() {
-        return board.isMoveOnInsideBoard(this);
+        boolean isMoveOnInsideBoard = board.isMoveOnInsideBoard(this);
+        if(!isMoveOnInsideBoard) {
+            return false;
+        }
+
+        boolean squarePositionHasChecker =  board.squarePositionHasChecker(positionSquareDestiny);
+        return !squarePositionHasChecker;
     }
 
     public void execute() {
