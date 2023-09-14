@@ -48,6 +48,12 @@ public class Board {
         return square.hasChecker();
     }
 
+    public boolean isMoveOnCorrectDirection(Move move) {
+        // TODO: verificar a posicao é mais uma para baixo se for red ou menso uma se for branca
+        // TODO: verificar se é Checker ou Queen
+        return true;
+    }
+
     private void setupRedCheckers(PlayerRed playerRed) {
         // add red checkers
         for (int row = START_POSITION_BOARD; row <= END_ROW_POSITION_RED_BOARD; row++) {
